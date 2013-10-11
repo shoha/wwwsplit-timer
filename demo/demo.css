@@ -1,0 +1,100 @@
+
+
+div.timer
+{
+  width: 300px;
+  padding: 10px;
+  margin: 20px auto 0 auto;
+
+  background: #eee;
+
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+/*  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);*/
+}
+
+div#control_nav
+{
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+tr.active_split 
+{
+  background: rgb(245, 245, 245); 
+}
+
+td.split_time
+{
+  text-align: right;
+}
+
+  td.split_time.best span
+  {
+    position: relative;
+  }
+
+  td.split_time.best span:after 
+  {
+    font-family: FontAwesome;
+    display: inline-block;
+    content: '\f005';
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    color: #D4AF37;
+    font-size: 7px; 
+  }
+
+  td.split_time.ahead 
+  {
+    color: #46a546; 
+  }
+
+    td.split_time.ahead.gained_time 
+    {
+      color: #46a546; 
+    }
+
+    td.split_time.ahead.lost_time 
+    {
+      color: #94f806; 
+    }
+
+  td.split_time.behind 
+  {
+    color: #9d261d; 
+  }
+
+    td.split_time.behind.gained_time 
+    {
+      color: #f89406; 
+    }
+
+    td.split_time.behind.lost_time 
+    {
+      color: #9d261d; 
+    }
+
+  td.split_time.unknown 
+  {
+    color: #f8e406; 
+  }
+
+div#debug_info
+{
+  margin: 30px;
+}
+
+  div#debug_info button
+  {
+    margin: 10px 0 10px 0;
+  }
+
+  div#debug_info pre
+  {
+
+  }

@@ -1,0 +1,53 @@
+<div class="ng-scope" id="control_nav">
+  <button class="control" id="start" ng-click="start_timer()" ng-disabled="running || is_editing">
+    <i class="icon-play icon-2x icon-white"></i>
+  </button>
+  <button disabled="disabled" class="control" id="reset" ng-click="reset_timer()" ng-disabled="!(running || is_finished)">
+    <i class="icon-refresh icon-2x icon-white"></i>
+  </button>
+  <button disabled="disabled" class="control" id="split" ng-click="split()" ng-disabled="!running">
+    <i class="icon-forward icon-2x icon-white"></i>
+  </button>
+  <button disabled="disabled" class="control" id="unsplit" ng-click="unsplit()" ng-disabled="!running || current_split == current_run.splits[0]">
+    <i class="icon-backward icon-2x icon-white"></i>
+  </button>
+  <button style="display: none;" class="control" id="cancel_edit" ng-click="cancel_edit()" ng-disabled="running || run_editor_form.$invalid" ng-show="is_editing">
+    <i class="icon-ban-circle icon-2x icon-white"></i>
+  </button>
+</div>
+
+<div id='current_run'>
+  <table class='table' id='current_run_splits' ng-class='{"table-hover": !running}'>
+    <tr id='current_run_title'>
+      <th colspan='2'>
+        <h1>
+          {{current_run.title}} #{{current_run.attempts}}
+        </h1>
+        <h4 id='current_run_game_title'>
+          <a ng-href='#/games/{{current_run.game.id}}'>
+            {{current_run.game.title}}
+          </a>
+        </h4>
+      </th>
+    </tr>
+    <tr class='current_run_split' ng-class='{active_split: split == current_split}' ng-repeat='split in current_run.splits | split_count_limiter:current_split:max_shown_splits'>
+      <td class='split_title'>
+      {{split.title}}
+      </td>
+      <td class='split_time' ng-class='{ahead: split.live_data.live_time < split.split_time, behind: split.live_data.live_time > split.split_time,
+      gained_time: split.live_data.segment_diff < 0, lost_time: split.live_data.segment_diff > 0 ,
+      unknown: split.live_data.live_time && !split.live_data.relative_time,
+      best: split.live_data.best_segment}'>
+        <span>{{split.live_data.relative_time || split.live_data.live_time || split.split_time | milliseconds_to_HMS}}</span>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class='text-right' id='clock'>
+  <h1 class='clock'>
+    {{(elapsed_time | milliseconds_to_HMS) || ''}}
+  </h1>
+</div>
+
+<div class='highchart' id='current_run_chart_data' ng-model='current_run_chart_series' ng-options='current_run_chart_options'></div>

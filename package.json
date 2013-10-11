@@ -1,0 +1,48 @@
+{
+  "author": {
+    "name": "James Shore",
+    "email": "shore.james@gmail.com"
+  },
+  "name": "wwwsplit-timer",
+  "description": "The timer AngularJS component for wwwspl.it",
+  "version": "0.1.0",
+  "homepage": "http://wwwspl.it",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shoja/wwwsplit-timer.git"
+  },
+  "keywords": [
+    "angular",
+    "directive",
+    "javascript",
+    "splittimer",
+    "timer"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-contrib-jshint": "~0.6.2",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt-html2js": "~0.1.7",
+    "grunt-karma": "~0.6.1",
+    "grunt-ngmin": "0.0.3",
+    "grunt-open": "~0.2.2",
+    "grunt-release": "~0.5.1",
+    "karma": "~0.10.1",
+    "karma-firefox-launcher": "*",
+    "karma-mocha": "~0.1",
+    "karma-ng-html2js-preprocessor": "~0.1",
+    "karma-coffee-preprocessor": "*",
+    "matchdep": "~0.1.2",
+    "grunt-contrib-coffee": "~0.7.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}
