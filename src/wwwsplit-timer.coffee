@@ -1,4 +1,4 @@
-angular.module('wwwsplit-timer', []).directive('timer', ['$timeout',
+angular.module('wwwsplit-timer', ['templates-main']).directive('timer', ['$timeout',
   ($timeout) ->
     restrict: 'C'
     scope:

@@ -12,7 +12,8 @@ module.exports = function(grunt) {
 
     dirs: {
       demo: 'demo',
-      dest: 'dist'
+      dest: 'dist',
+      temp: 'temp'
     },
 
     meta: {
@@ -28,12 +29,12 @@ module.exports = function(grunt) {
     // Configuring grunt helpers
     //
 
-    clean: ['<%= dirs.dest %>'],
+    clean: ['<%= dirs.dest %>', '<%= dirs.temp %>'],
 
     coffee: {  // grunt-contrib-coffee
       compile: {
         files: {
-          'src/<%= pkg.name %>.js' : ['src/*.coffee']
+          '<%= dirs.temp %>/<%= pkg.name %>.js' : ['src/*.coffee']
         }
       }
     },
@@ -43,8 +44,8 @@ module.exports = function(grunt) {
         banner: '<%= meta.banner %>'
       },
       dist: {
-        src: ['src/*.js'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>.js'
+        src: ['<%= dirs.temp %>/*.js'],
+        dest: '<%= dirs.temp %>/<%= pkg.name %>.js'
       }
     },
 
@@ -64,7 +65,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: ['src/*', '!src/*.coffee'],
+          src: ['<%= dirs.temp %>/<%= pkg.name %>.js', '<%= dirs.temp %>/<%= pkg.name %>.min.js'],
           dest: '<%= dirs.demo %>/',
           filter: 'isFile'
         }]
@@ -73,18 +74,17 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: ['src/*.tmpl'],
+          src: ['<%= dirs.temp %>/<%= pkg.name %>.js', '<%= dirs.temp %>/<%= pkg.name %>.min.js'],
           dest: '<%= dirs.dest %>/',
           filter: 'isFile'
         }]
-      }
+      },
     },
 
-    cssmin: {  // grunt-contrib-cssmin
-      combine: {
-        files: {
-          '<%= dirs.dest %>/<%= pkg.name %>.min.css': ['src/*.css']
-        }
+    html2js: {
+      main: {
+        src: ['src/**/*.tmpl'],
+        dest : '<%= dirs.temp %>/template.js'
       }
     },
 
@@ -106,9 +106,9 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= dirs.dest %>',
+          cwd: '<%= dirs.temp %>',
           src: '*.js',
-          dest: '<%= dirs.dest %>'
+          dest: '<%= dirs.temp %>'
         }]
       }
     },
@@ -124,14 +124,14 @@ module.exports = function(grunt) {
         banner: '<%= meta.banner %>'
       },
       dist: {
-        src: ['<%= dirs.dest %>/<%= pkg.name %>.js'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>.min.js'
+        src: ['<%= dirs.temp %>/<%= pkg.name %>.js'],
+        dest: '<%= dirs.temp %>/<%= pkg.name %>.min.js'
       }
     },
 
     watch: {  // grunt-contrib-watch
       src: {
-        files: ['src/*.js', 'src/*.css'],
+        files: ['src/*.js', 'src/*.css', 'src/*.coffee'],
         tasks: ['test'],
       }
     }
@@ -158,10 +158,10 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'test',
     'coffee',
+    'html2js',
     'concat',
     'ngmin',
     'uglify',
-    'cssmin',
     'copy'
   ]);
 

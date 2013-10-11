@@ -10,7 +10,7 @@ describe('timer', function() {
   beforeEach(module('wwwsplit-timer'));
 
   // inject the template
-  beforeEach(module('timer.tmpl'));
+  beforeEach(module('templates-main'));
 
   // compile and link
   beforeEach(inject(function($rootScope, $compile) {
