@@ -48,7 +48,7 @@ module.exports = function(config) {
     ngHtml2JsPreprocessor: {
       // strip this from the file path
       stripPrefix: 'src/',
-      moduleName: 'templates-main'
+      moduleName: 'wwwsplit-timer.templates'
     },
 
 

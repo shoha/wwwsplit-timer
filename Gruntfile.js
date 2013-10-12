@@ -84,7 +84,10 @@ module.exports = function(grunt) {
     html2js: {
       main: {
         src: ['src/**/*.tmpl'],
-        dest : '<%= dirs.temp %>/template.js'
+        dest : '<%= dirs.temp %>/template.js',
+        options: {
+          module: 'wwwsplit-timer.templates'
+        }
       }
     },
 

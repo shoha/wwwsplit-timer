@@ -3,19 +3,20 @@
 
 var expect = chai.expect;
 
-describe('timer', function() {
-  var elem, scope;
+describe('timer::', function() {
+  var elem, scope, timeout, splits;
 
   // inject the module
   beforeEach(module('wwwsplit-timer'));
 
-  // inject the template
-  beforeEach(module('templates-main'));
+  // inject the templates
+  beforeEach(module('wwwsplit-timer.templates'));
 
   // compile and link
-  beforeEach(inject(function($rootScope, $compile) {
-    var ctrlScope = $rootScope.$new();
-    ctrlScope.run = {
+  beforeEach(inject(function($rootScope, $compile, $timeout) {
+    timeout = $timeout;
+
+    $rootScope.run = {
       title: 'Test Drive',
       attempts: 0,
       game_id: 1,
@@ -26,12 +27,13 @@ describe('timer', function() {
       },
       splits: [{
         title: 'First split',
-        split_time: 6404,
+        split_time: 100,
         icon_id: 0
       },
       {
         title: 'Second split',
-        split_time: 7507,
+        split_time: 200,
+        best_segment: 0,
         icon_id: 0
       },
       {
@@ -41,46 +43,162 @@ describe('timer', function() {
       },
       {
         title: 'Fourth split',
-        split_time: 11547,
+        split_time: 400,
         icon_id: 0
       },
       {
         title: 'Fifth split',
-        split_time: 11877,
+        split_time: 500,
         icon_id: 0
       },
       {
         title: 'Sixth split',
-        split_time: 12063,
+        split_time: 600,
         icon_id: 0
       }]
     };
 
-    ctrlScope.running = false;
+    $rootScope.running = false;
 
     elem = angular.element('<div class="timer" ng-model="run" is_running="running"></div>');
-    $compile(elem)(ctrlScope);
-    ctrlScope.$digest();
+    $compile(elem)($rootScope);
+    $rootScope.$digest();
+    scope = elem.scope();
+    splits = scope.current_run.splits;
+
 
   }));
 
-  describe('rendering', function() {
-    it('should create the controls', inject(function() {
-      var control_nav = elem.find('#control_nav');
+  describe('initialization::', function()
+  {
+    it('should have the run in its scope', inject(function() {
 
-      expect(control_nav).to.have.length(1);
-    }));
-
-    it('should create the splits table', inject(function() {
-      var splits_table = elem.find('#current_run_splits');
-
-      expect(splits_table).to.have.length(1);
-    }));
-
-    it('should display the proper number of splits', inject(function() {
-      var splits = elem.find('.current_run_split');
-
+      expect(scope.current_run).to.be.ok;
       expect(splits).to.have.length(6);
+    }));
+
+    it('should not be running', inject(function() {
+      expect(scope.running).to.be.false;
+      expect(scope.start_time).to.not.exist;
+      expect(scope.elapsed_time).to.not.exist;
+    }));
+
+    it('should not have any live data', inject(function() {
+      for(var i = 0; i < splits.length; i++)
+      {
+        expect(splits[i].live_data).to.not.exist;
+      }
+
+      expect(scope.current_run_chart_series.data).to.be.empty;
+    }));
+
+  });
+
+  describe('basic functionality::', function() {
+    it('should start timer when start_timer is called', inject(function() {
+      scope.start_timer();
+      expect(scope.start_time).to.exist;
+      expect(scope.current_split).to.eq(splits[0]);
+
+      timeout.flush();
+      expect(scope.elapsed_time).to.exist;
+      expect(scope.elapsed_time).to.be.above(0);
+    }));
+
+    it('should increment attempts when start_timer is called', inject(function() {
+      var attempts = scope.current_run.attempts;
+      scope.start_timer();
+      expect(scope.current_run.attempts).to.eq(attempts + 1)
+    }));
+
+    it('should advance the current_split when split is called', inject(function() {
+      scope.start_timer();
+      timeout.flush();
+      scope.split();
+
+      expect(scope.current_split).to.eq(splits[1]);
+    }));
+
+    it('should store live_data when split is called', inject(function() {
+      scope.start_timer();
+      timeout.flush();
+      scope.split();
+
+      expect(splits[0].live_data).to.exist;
+      expect(splits[0].live_data).to.include.keys('live_time')
+      expect(splits[0].live_data.live_time).to.eq(scope.elapsed_time);
+      expect(scope.current_run_chart_series.data).to.have.length(1);
+    }));
+
+    it('should calculate split statistics correctly on split', inject(function() {
+      scope.start_timer();
+      timeout.flush();
+      scope.split();
+
+      expect(splits[0].live_data.live_time).to.eq(scope.elapsed_time);
+      expect(splits[0].live_data.live_segment_time).to.eq(scope.elapsed_time);
+      expect(splits[0].live_data.relative_time).to.eq(splits[0].live_data.live_time - splits[0].split_time);
+      expect(splits[0].live_data.best_segment).to.be.true;
+
+      timeout.flush();
+      scope.split();
+      expect(splits[1].live_data.live_time).to.eq(scope.elapsed_time);
+      expect(splits[1].live_data.live_segment_time).to.eq(scope.elapsed_time - splits[0].live_data.live_time);
+      expect(splits[1].live_data.relative_time).to.eq(splits[1].live_data.live_time - splits[1].split_time);
+      expect(splits[1].live_data.best_segment).to.be.false;
+
+      timeout.flush();
+      scope.split();
+      expect(splits[2].live_data.live_time).to.eq(scope.elapsed_time);
+      expect(splits[2].live_data.live_segment_time).to.eq(scope.elapsed_time - splits[1].live_data.live_time);
+      expect(splits[2].live_data.relative_time).to.not.exist;
+
+    }));
+
+    it('should step back when unsplit is called', inject(function() {
+      scope.start_timer();
+      timeout.flush();
+      scope.split();
+      timeout.flush();
+      scope.unsplit();
+
+      expect(scope.current_split).to.eq(splits[0]);
+      expect(scope.current_split.live_data).to.be.empty;
+      expect(scope.current_run_chart_series.data).to.be.empty;
+    }));
+
+    it('should reset the run when reset_timer is called', inject(function() {
+      scope.start_timer();
+      timeout.flush();
+
+      scope.reset_timer();
+      expect(scope.running).to.be.false;
+      expect(scope.is_finished).to.be.false;
+      expect(scope.current_split).to.not.exist;
+      expect(scope.start_time).to.not.exist;
+      expect(scope.elapsed_time).to.not.exist;
+
+      for(var i = 0; i < splits.length; i++)
+      {
+        expect(splits[i].live_data).to.not.exist;
+      }
+
+      expect(scope.current_run_chart_series.data).to.be.empty;
+
+    }));
+
+    it('should stop running when the run is finished', inject(function() {
+      scope.start_timer();
+
+      for(var i = 0; i < splits.length; i ++)
+      {
+        timeout.flush();
+        scope.split();
+      }
+
+      expect(scope.is_finished).to.be.true;
+      expect(scope.running).to.be.false;
+      expect(scope.current_split).to.not.exist;
     }));
 
   });

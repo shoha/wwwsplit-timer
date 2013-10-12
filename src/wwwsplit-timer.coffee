@@ -1,4 +1,4 @@
-angular.module('wwwsplit-timer', ['templates-main']).directive('timer', ['$timeout',
+angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer', ['$timeout',
   ($timeout) ->
     restrict: 'C'
     scope:
@@ -114,7 +114,7 @@ angular.module('wwwsplit-timer', ['templates-main']).directive('timer', ['$timeo
         $scope.is_editing = false
 
       reset_splits = ->
-        (split.live_data = {} for split in $scope.current_run.splits) if $scope.current_run.splits
+        (delete split.live_data for split in $scope.current_run.splits) if $scope.current_run.splits
 
       $scope.reset_timer = ->
         $timeout.cancel $scope.timer_timeout_promise
@@ -123,7 +123,8 @@ angular.module('wwwsplit-timer', ['templates-main']).directive('timer', ['$timeo
         $scope.current_run_chart_series.data = [] if $scope.current_run_chart_series
         $scope.running = false
         $scope.is_finished = false
-        $scope.elapsed_time = 0
+        $scope.elapsed_time = null
+        $scope.start_time = null;
 
       $scope.poke_chart_options = ->
         $scope.current_run_chart_options.poke = !$scope.current_run_chart_options.poke
