@@ -187,8 +187,9 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
         h = Math.floor(seconds / 3600)
         m = Math.floor(seconds % 3600 / 60)
         s = (seconds % 3600 % 60).toFixed(2)
-        (if is_negative then '-' else '') + ((if h > 0 then h + ":" else "")) + ((if m > 0 then ((if h > 0 and m < 10 then "0" else "")) + m +
-        ":" else "0:")) + ((if s < 10 then "0" else "")) + s
+
+        (if is_negative then '-' else '') + (if h > 0 then h + ":" else "") + (if m > 0 or h > 0 then (if h > 0 and m < 10 then "0" else "") + m +
+        ":" else "0:") + (if s < 10 then "0" else "") + s
 
   .filter 'HMS_to_milliseconds',  ->
       (HMS) ->

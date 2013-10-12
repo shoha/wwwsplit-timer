@@ -3,6 +3,43 @@
 
 var expect = chai.expect;
 
+describe('milliseconds_to_HMS::', function() {
+  var filter;
+
+  beforeEach(module('wwwsplit-timer'));
+  beforeEach(inject(function($filter) {
+    filter = $filter;
+  }));
+
+  it('should have the milliseconds_to_hms filter', function() {
+    expect(filter('milliseconds_to_HMS')).to.exist;
+  });
+
+  it('should respond to null with "-"', function() {
+    expect(filter('milliseconds_to_HMS')(null)).to.eq('-')
+  });
+
+  it('should respond to integers with a properly formatted string', function() {
+    expect(filter('milliseconds_to_HMS')(Date.now())).to.match(/^((\d+(.\d+)?):)*\d+(.\d+)?$/);
+    expect(filter('milliseconds_to_HMS')(-Date.now())).to.match(/^[-]((\d+(.\d+)?):)*\d+(.\d+)?$/);
+  });
+
+  it('should convert integers to the proper string representation', function() {
+    expect(filter('milliseconds_to_HMS')(0)).to.eq('0:00.00');
+    expect(filter('milliseconds_to_HMS')(59990)).to.eq('0:59.99');
+    expect(filter('milliseconds_to_HMS')(60000)).to.eq('1:00.00');
+    expect(filter('milliseconds_to_HMS')(3599990)).to.eq('59:59.99');
+    expect(filter('milliseconds_to_HMS')(3600000)).to.eq('1:00:00.00');
+
+    expect(filter('milliseconds_to_HMS')(-0)).to.eq('0:00.00');
+    expect(filter('milliseconds_to_HMS')(-59990)).to.eq('-0:59.99');
+    expect(filter('milliseconds_to_HMS')(-60000)).to.eq('-1:00.00');
+    expect(filter('milliseconds_to_HMS')(-3599990)).to.eq('-59:59.99');
+    expect(filter('milliseconds_to_HMS')(-3600000)).to.eq('-1:00:00.00');
+  });
+
+});
+
 describe('timer::', function() {
   var elem, scope, timeout, splits;
 

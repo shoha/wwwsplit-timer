@@ -222,7 +222,7 @@ angular.module('timer.tmpl', []).run([
       h = Math.floor(seconds / 3600);
       m = Math.floor(seconds % 3600 / 60);
       s = (seconds % 3600 % 60).toFixed(2);
-      return (is_negative ? '-' : '') + (h > 0 ? h + ':' : '') + (m > 0 ? (h > 0 && m < 10 ? '0' : '') + m + ':' : '0:') + (s < 10 ? '0' : '') + s;
+      return (is_negative ? '-' : '') + (h > 0 ? h + ':' : '') + (m > 0 || h > 0 ? (h > 0 && m < 10 ? '0' : '') + m + ':' : '0:') + (s < 10 ? '0' : '') + s;
     };
   }).filter('HMS_to_milliseconds', function () {
     return function (HMS) {
