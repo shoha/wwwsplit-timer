@@ -38,7 +38,7 @@ describe('milliseconds_to_HMS::', function() {
     expect(filter('milliseconds_to_HMS')(-3600000)).to.eq('-1:00:00.00');
   });
 
-});
+}); 
 
 describe('timer::', function() {
   var elem, scope, timeout, splits;

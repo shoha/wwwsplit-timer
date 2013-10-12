@@ -159,19 +159,6 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
 
 
 ])
-
-  .filter 'split_count_limiter', ->
-    (splits, current_split, count) ->
-      return [] if not splits?
-      return splits if not count? or count > splits.length
-      return splits.slice 0, count if not current_split
-
-      index_of_current_split = splits.indexOf current_split
-      return splits.slice splits.length - count, splits.length if index_of_current_split + count > splits.length
-
-      start = Math.max 0, index_of_current_split - Math.floor(count / 2)
-      end = Math.min start + count, splits.length
-      return splits.slice start, end
       
   .filter 'milliseconds_to_HMS', ->
       (milliseconds) ->
@@ -191,12 +178,3 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
         (if is_negative then '-' else '') + (if h > 0 then h + ":" else "") + (if m > 0 or h > 0 then (if h > 0 and m < 10 then "0" else "") + m +
         ":" else "0:") + (if s < 10 then "0" else "") + s
 
-  .filter 'HMS_to_milliseconds',  ->
-      (HMS) ->
-        time_components = HMS.split(':')
-        seconds = 0
-
-        for value, index in time_components.reverse()
-          seconds += value * Math.pow(60, index)
-
-        seconds * 1000

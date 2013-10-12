@@ -30,7 +30,7 @@
         </h4>
       </th>
     </tr>
-    <tr class='current_run_split' ng-class='{active_split: split == current_split}' ng-repeat='split in current_run.splits | split_count_limiter:current_split:max_shown_splits'>
+    <tr class='current_run_split' ng-class='{active_split: split == current_split}' ng-repeat='split in current_run.splits'>
       <td class='split_title'>
       {{split.title}}
       </td>
