@@ -38,7 +38,7 @@ describe('milliseconds_to_HMS::', function() {
     expect(filter('milliseconds_to_HMS')(-3600000)).to.eq('-1:00:00.00');
   });
 
-}); 
+});
 
 describe('timer::', function() {
   var elem, scope, timeout, splits;
@@ -139,7 +139,6 @@ describe('timer::', function() {
 
       timeout.flush();
       expect(scope.elapsed_time).to.exist;
-      expect(scope.elapsed_time).to.be.above(0);
     }));
 
     it('should increment attempts when start_timer is called', inject(function() {

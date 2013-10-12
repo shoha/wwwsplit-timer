@@ -159,7 +159,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
 
 
 ])
-      
+    
   .filter 'milliseconds_to_HMS', ->
       (milliseconds) ->
         return '-' if not milliseconds?
