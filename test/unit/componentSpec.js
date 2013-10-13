@@ -139,6 +139,7 @@ describe('timer::', function() {
 
       timeout.flush();
       expect(scope.elapsed_time).to.exist;
+      expect(scope.elapsed_time).to.be.above(-1);
     }));
 
     it('should increment attempts when start_timer is called', inject(function() {
@@ -168,7 +169,10 @@ describe('timer::', function() {
 
     it('should calculate split statistics correctly on split', inject(function() {
       scope.start_timer();
-      timeout.flush();
+      timeout.cancel(scope.timer_timeout_promise);
+      scope.elapsed_time = scope.start_time;
+
+      scope.elapsed_time += Math.floor(Math.random(5000));
       scope.split();
 
       expect(splits[0].live_data.live_time).to.eq(scope.elapsed_time);
@@ -176,14 +180,14 @@ describe('timer::', function() {
       expect(splits[0].live_data.relative_time).to.eq(splits[0].live_data.live_time - splits[0].split_time);
       expect(splits[0].live_data.best_segment).to.be.true;
 
-      timeout.flush();
+      scope.elapsed_time += Math.floor(Math.random(5000));
       scope.split();
       expect(splits[1].live_data.live_time).to.eq(scope.elapsed_time);
       expect(splits[1].live_data.live_segment_time).to.eq(scope.elapsed_time - splits[0].live_data.live_time);
       expect(splits[1].live_data.relative_time).to.eq(splits[1].live_data.live_time - splits[1].split_time);
       expect(splits[1].live_data.best_segment).to.be.false;
 
-      timeout.flush();
+      scope.elapsed_time += Math.floor(Math.random(5000));
       scope.split();
       expect(splits[2].live_data.live_time).to.eq(scope.elapsed_time);
       expect(splits[2].live_data.live_segment_time).to.eq(scope.elapsed_time - splits[1].live_data.live_time);
