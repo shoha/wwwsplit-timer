@@ -41,7 +41,7 @@ module.exports = function(config) {
     // generate js files from html templates
     preprocessors: {
       'src/*.tmpl': ['ng-html2js'],
-      'src/*.coffee': ['coffee']
+      'src/*.coffee': ['coffee', 'coverage']
     },
 
 
@@ -54,7 +54,12 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
 
 
     // web server port
