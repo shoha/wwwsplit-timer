@@ -14,50 +14,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
 
       # Chart Objects
       $scope.current_run_chart_series =
-        name: 'Teh Urn'
-        showInLegend: false
         data: []
-
-      $scope.current_run_chart_options =
-        chart:
-          renderTo: 'current_run_chart_data'
-          type: 'line'
-          backgroundColor: '#333'
-          borderColor: '#222'
-        colors:['white']
-        labels:
-          style:
-            color: 'white'
-        title:
-          floating: true
-          style:
-            display: 'none'
-        xAxis:
-          title:
-            enabled: false
-            text: null
-            style:
-              color: 'white'
-          labels:
-            enabled: false
-            style:
-              color: 'white'
-        yAxis:
-          title:
-            text: null
-            style:
-              color: 'white'
-          labels:
-            enabled: false
-            style:
-              color: 'white'
-        tooltip:
-          formatter: ->
-            return '<b>' + this.key + '</b><br/>' + this.y
-        credits:
-          style:
-            color: 'white'
-        width: '100%'
 
       # TIMER FUNCTIONS
       calculate_split_statistics = (split, index)->
