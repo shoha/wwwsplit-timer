@@ -195,6 +195,21 @@ describe('timer::', function() {
 
     }));
 
+    it('should attach unique IDs shared between split live_data and chart_series data points', function() {
+      scope.start_timer();
+      timeout.flush();
+      scope.split();
+
+      expect(splits[0].live_data.data_point_id).to.exist;
+      expect(splits[0].live_data.data_point_id).to.eq(scope.current_run_chart_series.data[0].id);
+
+      timeout.flush();
+      scope.split();
+      expect(splits[1].live_data.data_point_id).to.exist;
+      expect(splits[1].live_data.data_point_id).to.eq(scope.current_run_chart_series.data[1].id);
+      expect(splits[1].live_data.data_point_id).to.not.eq(splits[0].live_data.data_point_id);
+    });
+
     it('should step back when unsplit is called', inject(function() {
       scope.start_timer();
       timeout.flush();
@@ -220,7 +235,7 @@ describe('timer::', function() {
 
       for(var i = 0; i < splits.length; i++)
       {
-        expect(splits[i].live_data).to.not.exist;
+        expect(splits[i].live_data).to.be.empty;
       }
 
       expect(scope.current_run_chart_series.data).to.be.empty;

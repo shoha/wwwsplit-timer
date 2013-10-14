@@ -114,7 +114,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
         $scope.is_editing = false
 
       reset_splits = ->
-        (delete split.live_data for split in $scope.current_run.splits) if $scope.current_run.splits
+        (split.live_data = {} for split in $scope.current_run.splits) if $scope.current_run.splits
 
       $scope.reset_timer = ->
         $timeout.cancel $scope.timer_timeout_promise
@@ -135,10 +135,14 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
         calculate_split_statistics $scope.current_split, $scope.current_run.splits.indexOf($scope.current_split)
 
         if $scope.current_split.split_time?
+          data_point_id = (Math.random() * 1000000).toString(16);
+          
           $scope.current_run_chart_series.data.push
             x: $scope.current_split.live_data.live_time / 1000
             y: $scope.current_split.live_data.relative_time / 1000
             name: $scope.current_split.title
+            id: data_point_id
+          $scope.current_split.live_data.data_point_id = data_point_id;
 
         if $scope.current_split == $scope.current_run.splits[$scope.current_run.splits.length - 1]
           $scope.finish_run()
@@ -177,4 +181,3 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
 
         (if is_negative then '-' else '') + (if h > 0 then h + ":" else "") + (if m > 0 or h > 0 then (if h > 0 and m < 10 then "0" else "") + m +
         ":" else "0:") + (if s < 10 then "0" else "") + s
-

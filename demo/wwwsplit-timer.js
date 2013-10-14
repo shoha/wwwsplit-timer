@@ -132,7 +132,7 @@ angular.module('timer.tmpl', []).run([
               _results = [];
               for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                 split = _ref[_i];
-                _results.push(delete split.live_data);
+                _results.push(split.live_data = {});
               }
               return _results;
             }
@@ -153,15 +153,19 @@ angular.module('timer.tmpl', []).run([
             return $scope.current_run_chart_options.poke = !$scope.current_run_chart_options.poke;
           };
           $scope.split = function () {
+            var data_point_id;
             $scope.current_split.live_data = {};
             $scope.current_split.live_data.live_time = $scope.elapsed_time;
             calculate_split_statistics($scope.current_split, $scope.current_run.splits.indexOf($scope.current_split));
             if ($scope.current_split.split_time != null) {
+              data_point_id = (Math.random() * 1000000).toString(16);
               $scope.current_run_chart_series.data.push({
                 x: $scope.current_split.live_data.live_time / 1000,
                 y: $scope.current_split.live_data.relative_time / 1000,
-                name: $scope.current_split.title
+                name: $scope.current_split.title,
+                id: data_point_id
               });
+              $scope.current_split.live_data.data_point_id = data_point_id;
             }
             if ($scope.current_split === $scope.current_run.splits[$scope.current_run.splits.length - 1]) {
               $scope.finish_run();
