@@ -22,22 +22,11 @@ angular.module('wwwsplit-timer.charts', ['d3'])
 
         x = d3.scale.linear()
 
-        x_axis = d3.svg.axis()
-          .scale(x)
-          .orient('bottom')
-
         y = d3.scale.linear()
-
-        y_axis = d3.svg.axis()
-          .scale(y)
-          .orient('left')
 
         svg = d3.select(elem[0])
           .append('svg')
           .attr('transform', 'translate(' + padding.left + ', ' + padding.top + ')')
-
-        svg.append('g').attr('class', 'x axis')
-        svg.append('g').attr('class', 'y axis')
 
         update_chart = (init) ->
           chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (padding.left + padding.right);
@@ -51,22 +40,6 @@ angular.module('wwwsplit-timer.charts', ['d3'])
           
           x.domain(d3.extent($scope.data, time_function)).range([0, chart_width])
           y.domain(d3.extent($scope.data, relative_time_function)).range([chart_height, 0])
-
-          if(init)
-            svg.select('.x')
-              .attr('transform', 'translate(0, ' + chart_height + ')')
-              .call(x_axis)
-            svg.select('.y')
-              .call(y_axis)
-          else
-            transition = svg.transition().duration(transition_time)
-            transition.select('.x')
-              .attr('transform', 'translate(0, ' + chart_height + ')')
-              .call(x_axis)
-            transition.select('.y')
-              .call(y_axis)
-
-          init = false
 
           circles = svg.selectAll('circle')
             .data($scope.data, id_function)

@@ -11042,7 +11042,7 @@ angular.module('timer.tmpl', []).run([
         scope: { data: '=' },
         restrict: 'C',
         link: function ($scope, elem, attrs) {
-          var d3, id_function, init, padding, prev_chart_height, prev_chart_width, relative_time_function, resize_timer, svg, time_function, transition_time, update_chart, x, x_axis, y, y_axis;
+          var d3, id_function, init, padding, prev_chart_height, prev_chart_width, relative_time_function, resize_timer, svg, time_function, transition_time, update_chart, x, y;
           d3 = d3Service.d3();
           time_function = function (d) {
             return d.x;
@@ -11064,14 +11064,10 @@ angular.module('timer.tmpl', []).run([
             bottom: 20
           };
           x = d3.scale.linear();
-          x_axis = d3.svg.axis().scale(x).orient('bottom');
           y = d3.scale.linear();
-          y_axis = d3.svg.axis().scale(y).orient('left');
           svg = d3.select(elem[0]).append('svg').attr('transform', 'translate(' + padding.left + ', ' + padding.top + ')');
-          svg.append('g').attr('class', 'x axis');
-          svg.append('g').attr('class', 'y axis');
           update_chart = function (init) {
-            var chart_height, chart_width, circles, transition;
+            var chart_height, chart_width, circles;
             chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (padding.left + padding.right);
             chart_height = window.getComputedStyle(elem[0]).height.substring(0, window.getComputedStyle(elem[0]).height.length - 2) - (padding.bottom + padding.top);
             prev_chart_width = chart_width;
@@ -11086,15 +11082,6 @@ angular.module('timer.tmpl', []).run([
               chart_height,
               0
             ]);
-            if (init) {
-              svg.select('.x').attr('transform', 'translate(0, ' + chart_height + ')').call(x_axis);
-              svg.select('.y').call(y_axis);
-            } else {
-              transition = svg.transition().duration(transition_time);
-              transition.select('.x').attr('transform', 'translate(0, ' + chart_height + ')').call(x_axis);
-              transition.select('.y').call(y_axis);
-            }
-            init = false;
             circles = svg.selectAll('circle').data($scope.data, id_function);
             circles.transition().duration(transition_time).attr('cx', function (d) {
               return x(time_function(d));
@@ -11249,11 +11236,16 @@ angular.module('timer.tmpl', []).run([
             return $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) + 1];
           };
           $scope.unsplit = function () {
+            var d, i, _i, _len, _ref;
             $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) - 1];
-            $scope.current_split.live_data = {};
-            if ($scope.current_split.split_time != null) {
-              return $scope.chart_data.pop();
+            _ref = $scope.chart_data;
+            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+              d = _ref[i];
+              if (d.id === $scope.current_split.live_data.data_point_id) {
+                $scope.chart_data.splice(i, 1);
+              }
             }
+            return $scope.current_split.live_data = {};
           };
           return $scope.finish_run = function () {
             $timeout.cancel($scope.timer_timeout_promise);

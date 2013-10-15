@@ -106,8 +106,9 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.ch
 
       $scope.unsplit = ->
         $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) - 1]
+        ($scope.chart_data.splice(i, 1) if d.id == $scope.current_split.live_data.data_point_id) for d, i in $scope.chart_data
         $scope.current_split.live_data = {}
-        $scope.chart_data.pop() if $scope.current_split.split_time?
+        # $scope.chart_data.pop() if $scope.current_split.split_time?
 
       $scope.finish_run = ->
         $timeout.cancel $scope.timer_timeout_promise
