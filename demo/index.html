@@ -20,10 +20,9 @@
 <body ng-controller="demoCtrl">
 
   <div class="timer" ng-model="run" is_running="is_running"></div>
-  <div class="lineChart" data="data"></div>
 
   <div id="debug_info">
-    <button class="btn" ng-click="debug = !debug">Toggle debug info</button>
+    <button class="btn" ng-click="debug = !debug" ng-disabled="false">Toggle debug info</button>
     <pre ng-bind="run | json" ng-show="debug"></pre>
   </div>
 

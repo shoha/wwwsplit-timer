@@ -1,4 +1,4 @@
-angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer', ['$timeout',
+angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.charts']).directive('timer', ['$timeout',
   ($timeout) ->
     restrict: 'C'
     scope:
@@ -13,8 +13,8 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
       $scope.running = false
 
       # Chart Objects
-      $scope.current_run_chart_series =
-        data: []
+      $scope.chart_data = []
+        
 
       # TIMER FUNCTIONS
       calculate_split_statistics = (split, index)->
@@ -63,7 +63,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
         $scope.current_split = $scope.current_run.splits[0]
         $timeout.cancel $scope.timer_timeout_promise
         $scope.start_time = Date.now()
-        $scope.current_run_chart_series.data = []
+        $scope.chart_data = []
         $scope.timer_timeout_promise = $timeout update_time_on_timeout, 25
         $scope.current_run.attempts++
         $scope.running = true
@@ -77,14 +77,11 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
         $timeout.cancel $scope.timer_timeout_promise
         reset_splits()
         $scope.current_split = null
-        $scope.current_run_chart_series.data = [] if $scope.current_run_chart_series
+        $scope.chart_data = []
         $scope.running = false
         $scope.is_finished = false
         $scope.elapsed_time = null
         $scope.start_time = null;
-
-      $scope.poke_chart_options = ->
-        $scope.current_run_chart_options.poke = !$scope.current_run_chart_options.poke
 
       $scope.split = ->
         $scope.current_split.live_data = {}
@@ -94,7 +91,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
         if $scope.current_split.split_time?
           data_point_id = (Math.random() * 1000000).toString(16);
           
-          $scope.current_run_chart_series.data.push
+          $scope.chart_data.push
             x: $scope.current_split.live_data.live_time / 1000
             y: $scope.current_split.live_data.relative_time / 1000
             name: $scope.current_split.title
@@ -110,7 +107,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates']).directive('timer'
       $scope.unsplit = ->
         $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) - 1]
         $scope.current_split.live_data = {}
-        $scope.current_run_chart_series.data.pop() if $scope.current_split.split_time?
+        $scope.chart_data.pop() if $scope.current_split.split_time?
 
       $scope.finish_run = ->
         $timeout.cancel $scope.timer_timeout_promise

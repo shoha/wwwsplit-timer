@@ -3,14 +3,13 @@
     "name": "Brian Park",
     "email": "yaru22@gmail.com"
   },
-  "name": "ng-component-seed",
-  "description": "Angular component (directive, filter, service, etc.) seed that is used to kickstart the implementation.",
+  "name": "wwwsplit-timer",
+  "description": "The timer component for wwwspl.it",
   "version": "0.1.0",
-  "license": "MIT",
-  "homepage": "https://github.com/yaru22/ng-component-seed",
+  "homepage": "http://wwwspl.it",
   "repository": {
     "type": "git",
-    "url": "git://github.com/yaru22/ng-component-seed.git"
+    "url": "git://github.com/shoja/wwwsplit-timer.git"
   },
   "dependencies": {
     "angular": "v1.2.0-rc.2",

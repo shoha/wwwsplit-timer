@@ -1,4 +1,4 @@
-angular.module('wwwsplit-timer-demo', ['wwwsplit-timer', 'wwwsplit-timer.chart']).controller('demoCtrl', function($scope)
+angular.module('wwwsplit-timer-demo', ['wwwsplit-timer']).controller('demoCtrl', function($scope)
 {
   $scope.run = {
     title: 'Test Drive',
@@ -43,30 +43,4 @@ angular.module('wwwsplit-timer-demo', ['wwwsplit-timer', 'wwwsplit-timer.chart']
 
   $scope.running = false;
 
-  $scope.data = [
-    {
-      x: 0,
-      y: 0,
-      name: '',
-      id: 0,
-    },
-    {
-      x: 1,
-      y: 1,
-      name: '',
-      id: 1,
-    },
-   {
-      x: 2,
-      y: 2,
-      name: '',
-      id: 2,
-    },
-    {
-      x: 3,
-      y: 3,
-      name: '',
-      id: 3,
-    }
-  ]
 });
