@@ -116,10 +116,26 @@ div.lineChart
   height: 150px;
   margin: 0 auto;
   background: #eee;
+  position: relative;
+  border-radius: 10px;
 }
+
+  div.lineChart:after
+  {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.6) inset;
+    border-radius: 10px;
+
+  }
 
   div.lineChart svg
   {
+    border-radius: 10px;
   }
 
   div.lineChart svg #origin_line
@@ -128,9 +144,14 @@ div.lineChart
     stroke: black;
   }
 
-  div.lineChart svg rect.ahead
+  div.lineChart svg rect#ahead_rect
   {
-    fill: green;
+    fill: rgba(70, 165, 70, 1);
+  }
+
+  div.lineChart svg rect#behind_rect
+  {
+    fill: rgba(165, 70, 70, 1);
   }
 
   div.lineChart svg .axis .domain
@@ -140,20 +161,17 @@ div.lineChart
     stroke: black;
   }
 
-  div.lineChart svg .origin_line
-  {
-    stroke: black;
-  }
-
-  div.lineChart svg .timer_line
+  div.lineChart svg #timer_line
   {
     fill: none;
-    stroke: rgb(0, 136, 204);
+    /*stroke: rgb(0, 136, 204);*/
+    stroke: white;
     stroke-width: 3px;
   }
 
   div.lineChart svg .circle
   {
-    fill: rgb(0, 136, 204);
+    /*fill: rgb(0, 136, 204);*/
+    fill: white;
   }
 
