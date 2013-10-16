@@ -14,11 +14,14 @@ angular.module('wwwsplit-timer.charts', ['d3'])
         transition_time = 750
         init = true;
 
-        padding =
-          left: 40
-          right: 20
-          top: 20
-          bottom: 20
+        margin =
+          left: 10
+          right: 10
+          top: 10
+          bottom: 10
+
+        chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (margin.left + margin.right);
+        chart_height = window.getComputedStyle(elem[0]).height.substring(0, window.getComputedStyle(elem[0]).height.length - 2) - (margin.bottom + margin.top);
 
         x = d3.scale.linear()
 
@@ -26,7 +29,12 @@ angular.module('wwwsplit-timer.charts', ['d3'])
 
         svg = d3.select(elem[0])
           .append('svg')
-          .attr('transform', 'translate(' + padding.left + ', ' + padding.top + ')')
+          .attr('width', chart_width + margin.left + margin.right)
+          .attr('height', chart_height + margin.top + margin.bottom)
+
+        g = svg
+          .append('g')
+          .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')')
 
         line = d3.svg.line()
           .x((d) ->
@@ -46,37 +54,38 @@ angular.module('wwwsplit-timer.charts', ['d3'])
           )
           .interpolate('linear')
 
-        svg.append('svg:path').attr('class', 'origin_line');
-        svg.append('svg:path').attr('class', 'timer_line') 
+        g.append('svg:path').attr('class', 'origin_line')
+        g.append('svg:path').attr('class', 'timer_line') 
 
         update_chart = (init) ->
-          chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (padding.left + padding.right);
-          chart_height = window.getComputedStyle(elem[0]).height.substring(0, window.getComputedStyle(elem[0]).height.length - 2) - (padding.bottom + padding.top);
+          chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (margin.left + margin.right);
+          chart_height = window.getComputedStyle(elem[0]).height.substring(0, window.getComputedStyle(elem[0]).height.length - 2) - (margin.bottom + margin.top);
 
           prev_chart_width = chart_width
           prev_chart_height = chart_height
 
-          svg.attr('width', chart_width + padding.left + padding.right)
-          svg.attr('height', chart_height + padding.top + padding.bottom)
+          svg.attr('width', chart_width + margin.left + margin.right)
+          svg.attr('height', chart_height + margin.top + margin.bottom)
           
           x.domain(d3.extent($scope.data, time_function)).range([0, chart_width])
-          extent = d3.extent($scope.data, relative_time_function)
-          max_extent = Math.max(Math.abs(extent[0]), Math.abs(extent[1]))
-          adjusted_extent = [-max_extent, max_extent]
 
-          y.domain(adjusted_extent).range([chart_height, 0])
+          y_extent = d3.extent($scope.data, relative_time_function)
+          max_y_extent = Math.max(Math.abs(y_extent[0]), Math.abs(y_extent[1]))
+          adjusted_y_extent = [-max_y_extent, max_y_extent]
 
-          svg.selectAll('path.origin_line')
+          y.domain(adjusted_y_extent).range([chart_height, 0])
+
+          g.selectAll('path.origin_line')
             .data([[[0, 0],[chart_width, 0]]])
             .attr('d', origin_line)
 
-          svg.selectAll('path.timer_line')
+          g.selectAll('path.timer_line')
             .data([$scope.data])
             .transition()
             .duration(transition_time)
             .attr('d', line)
 
-          circles = svg.selectAll('circle')
+          circles = g.selectAll('circle')
             .data($scope.data, id_function)
 
           circles.transition()
