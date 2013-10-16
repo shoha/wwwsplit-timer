@@ -2,7 +2,7 @@ angular.module('wwwsplit-timer.templates', ['timer.tmpl']);
 angular.module('timer.tmpl', []).run([
   '$templateCache',
   function ($templateCache) {
-    $templateCache.put('timer.tmpl', '<div class="ng-scope" id="control_nav">\n' + '  <button class="control" id="start" ng-click="start_timer()" ng-disabled="running || is_editing">\n' + '    <i class="icon-play icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="reset" ng-click="reset_timer()" ng-disabled="!(running || is_finished)">\n' + '    <i class="icon-refresh icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="split" ng-click="split()" ng-disabled="!running">\n' + '    <i class="icon-forward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="unsplit" ng-click="unsplit()" ng-disabled="!running || current_split == current_run.splits[0]">\n' + '    <i class="icon-backward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button style="display: none;" class="control" id="cancel_edit" ng-click="cancel_edit()" ng-disabled="running || run_editor_form.$invalid" ng-show="is_editing">\n' + '    <i class="icon-ban-circle icon-2x icon-white"></i>\n' + '  </button>\n' + '</div>\n' + '\n' + '<div id=\'current_run\'>\n' + '  <table class=\'table\' id=\'current_run_splits\' ng-class=\'{"table-hover": !running}\'>\n' + '    <tr id=\'current_run_title\'>\n' + '      <th colspan=\'2\'>\n' + '        <h1>\n' + '          {{current_run.title}} #{{current_run.attempts}}\n' + '        </h1>\n' + '        <h4 id=\'current_run_game_title\'>\n' + '          <a ng-href=\'#/games/{{current_run.game.id}}\'>\n' + '            {{current_run.game.title}}\n' + '          </a>\n' + '        </h4>\n' + '      </th>\n' + '    </tr>\n' + '    <tr class=\'current_run_split\' ng-class=\'{active_split: split == current_split}\' ng-repeat=\'split in current_run.splits\'>\n' + '      <td class=\'split_title\'>\n' + '      {{split.title}}\n' + '      </td>\n' + '      <td class=\'split_time\' ng-class=\'{ahead: split.live_data.live_time < split.split_time, behind: split.live_data.live_time > split.split_time,\n' + '      gained_time: split.live_data.segment_diff < 0, lost_time: split.live_data.segment_diff > 0 ,\n' + '      unknown: split.live_data.live_time && !split.live_data.relative_time,\n' + '      best: split.live_data.best_segment}\'>\n' + '        <span>{{split.live_data.relative_time || split.live_data.live_time || split.split_time | milliseconds_to_HMS}}</span>\n' + '      </td>\n' + '    </tr>\n' + '  </table>\n' + '</div>\n' + '\n' + '<div class=\'text-right\' id=\'clock\'>\n' + '  <h1 class=\'clock\'>\n' + '    {{(elapsed_time | milliseconds_to_HMS) || \'\'}}\n' + '  </h1>\n' + '</div>\n' + '\n' + '<div class="lineChart" data="chart_data"></div>');
+    $templateCache.put('timer.tmpl', '<div class="ng-scope" id="control_nav">\n' + '  <button class="control" id="start" ng-click="start_timer()" ng-disabled="running || is_editing">\n' + '    <i class="icon-play icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="reset" ng-click="reset_timer()" ng-disabled="!(running || is_finished)">\n' + '    <i class="icon-refresh icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="split" ng-click="split()" ng-disabled="!running">\n' + '    <i class="icon-forward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="unsplit" ng-click="unsplit()" ng-disabled="!running || current_split == current_run.splits[0]">\n' + '    <i class="icon-backward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button style="display: none;" class="control" id="cancel_edit" ng-click="cancel_edit()" ng-disabled="running || run_editor_form.$invalid" ng-show="is_editing">\n' + '    <i class="icon-ban-circle icon-2x icon-white"></i>\n' + '  </button>\n' + '</div>\n' + '\n' + '<div id=\'current_run\'>\n' + '  <table class=\'table\' id=\'current_run_splits\' ng-class=\'{"table-hover": !running}\'>\n' + '    <tr id=\'current_run_title\'>\n' + '      <th colspan=\'2\'>\n' + '        <h1>\n' + '          {{current_run.title}} #{{current_run.attempts}}\n' + '        </h1>\n' + '        <h4 id=\'current_run_game_title\'>\n' + '          <a ng-href=\'#/games/{{current_run.game.id}}\'>\n' + '            {{current_run.game.title}}\n' + '          </a>\n' + '        </h4>\n' + '      </th>\n' + '    </tr>\n' + '    <tr class=\'current_run_split\' ng-class=\'{active_split: split == current_split}\' ng-repeat=\'split in current_run.splits\'>\n' + '      <td class=\'split_title\'>\n' + '      {{split.title}}\n' + '      </td>\n' + '      <td class=\'split_time\' ng-class=\'{ahead: split.live_data.live_time < split.split_time, behind: split.live_data.live_time > split.split_time,\n' + '      gained_time: split.live_data.segment_diff < 0, lost_time: split.live_data.segment_diff > 0 ,\n' + '      unknown: split.live_data.live_time && !split.live_data.relative_time,\n' + '      best: split.live_data.best_segment}\'>\n' + '        <span>{{split.live_data.relative_time || split.live_data.live_time || split.split_time | milliseconds_to_HMS}}</span>\n' + '      </td>\n' + '    </tr>\n' + '  </table>\n' + '</div>\n' + '\n' + '<div class=\'text-right\' id=\'clock\'>\n' + '  <h1 class=\'clock\'>\n' + '    {{(elapsed_time | milliseconds_to_HMS) || \'\'}}\n' + '  </h1>\n' + '</div>\n' + '\n' + '<div class="lineChart" data="current_run.chart_data"></div>');
   }
 ]);
 (function () {
@@ -11162,7 +11162,6 @@ angular.module('timer.tmpl', []).run([
         link: function ($scope, elem, attrs) {
           var calculate_split_statistics, find_elapsed_time, reset_splits, update_time_on_timeout;
           $scope.running = false;
-          $scope.chart_data = [];
           calculate_split_statistics = function (split, index) {
             var i, _i, _ref;
             if (split.split_time == null) {
@@ -11215,7 +11214,7 @@ angular.module('timer.tmpl', []).run([
             $scope.current_split = $scope.current_run.splits[0];
             $timeout.cancel($scope.timer_timeout_promise);
             $scope.start_time = Date.now();
-            $scope.chart_data = [];
+            $scope.current_run.chart_data = [];
             $scope.timer_timeout_promise = $timeout(update_time_on_timeout, 25);
             $scope.current_run.attempts++;
             $scope.running = true;
@@ -11238,7 +11237,7 @@ angular.module('timer.tmpl', []).run([
             $timeout.cancel($scope.timer_timeout_promise);
             reset_splits();
             $scope.current_split = null;
-            $scope.chart_data = [];
+            $scope.current_run.chart_data = [];
             $scope.running = false;
             $scope.is_finished = false;
             $scope.elapsed_time = null;
@@ -11251,7 +11250,7 @@ angular.module('timer.tmpl', []).run([
             calculate_split_statistics($scope.current_split, $scope.current_run.splits.indexOf($scope.current_split));
             if ($scope.current_split.split_time != null) {
               data_point_id = (Math.random() * 1000000).toString(16);
-              $scope.chart_data.push({
+              $scope.current_run.chart_data.push({
                 x: $scope.current_split.live_data.live_time / 1000,
                 y: $scope.current_split.live_data.relative_time / 1000,
                 name: $scope.current_split.title,
@@ -11268,21 +11267,29 @@ angular.module('timer.tmpl', []).run([
           $scope.unsplit = function () {
             var d, i, _i, _len, _ref;
             $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) - 1];
-            _ref = $scope.chart_data;
+            _ref = $scope.current_run.chart_data;
             for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
               d = _ref[i];
               if (d.id === $scope.current_split.live_data.data_point_id) {
-                $scope.chart_data.splice(i, 1);
+                $scope.current_run.chart_data.splice(i, 1);
               }
             }
             return $scope.current_split.live_data = {};
           };
-          return $scope.finish_run = function () {
+          $scope.finish_run = function () {
             $timeout.cancel($scope.timer_timeout_promise);
             $scope.current_split = null;
             $scope.running = false;
             return $scope.is_finished = true;
           };
+          return $scope.$watch('current_run', function (new_value, old_value) {
+            if (old_value == null) {
+              return;
+            }
+            if (new_value) {
+              return new_value.chart_data || (new_value.chart_data = []);
+            }
+          });
         }
       };
     }
