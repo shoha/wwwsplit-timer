@@ -140,6 +140,11 @@ div.lineChart
     stroke: black;
   }
 
+  div.lineChart svg .origin_line
+  {
+    stroke: black;
+  }
+
   div.lineChart svg .timer_line
   {
     fill: none;
