@@ -28,6 +28,17 @@ angular.module('wwwsplit-timer.charts', ['d3'])
           .append('svg')
           .attr('transform', 'translate(' + padding.left + ', ' + padding.top + ')')
 
+        line = d3.svg.line()
+          .x((d) ->
+            return x(time_function(d))
+          )
+          .y((d) ->
+            return y(relative_time_function(d))
+          )
+          .interpolate('linear')
+
+        svg.append('svg:path').attr('class', 'timer_line') 
+
         update_chart = (init) ->
           chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (padding.left + padding.right);
           chart_height = window.getComputedStyle(elem[0]).height.substring(0, window.getComputedStyle(elem[0]).height.length - 2) - (padding.bottom + padding.top);
@@ -40,6 +51,12 @@ angular.module('wwwsplit-timer.charts', ['d3'])
           
           x.domain(d3.extent($scope.data, time_function)).range([0, chart_width])
           y.domain(d3.extent($scope.data, relative_time_function)).range([chart_height, 0])
+
+          svg.selectAll('path.timer_line')
+            .data([$scope.data])
+            .transition()
+            .duration(transition_time)
+            .attr('d', line)
 
           circles = svg.selectAll('circle')
             .data($scope.data, id_function)

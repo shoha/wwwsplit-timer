@@ -11042,7 +11042,7 @@ angular.module('timer.tmpl', []).run([
         scope: { data: '=' },
         restrict: 'C',
         link: function ($scope, elem, attrs) {
-          var d3, id_function, init, padding, prev_chart_height, prev_chart_width, relative_time_function, resize_timer, svg, time_function, transition_time, update_chart, x, y;
+          var d3, id_function, init, line, padding, prev_chart_height, prev_chart_width, relative_time_function, resize_timer, svg, time_function, transition_time, update_chart, x, y;
           d3 = d3Service.d3();
           time_function = function (d) {
             return d.x;
@@ -11066,6 +11066,12 @@ angular.module('timer.tmpl', []).run([
           x = d3.scale.linear();
           y = d3.scale.linear();
           svg = d3.select(elem[0]).append('svg').attr('transform', 'translate(' + padding.left + ', ' + padding.top + ')');
+          line = d3.svg.line().x(function (d) {
+            return x(time_function(d));
+          }).y(function (d) {
+            return y(relative_time_function(d));
+          }).interpolate('linear');
+          svg.append('svg:path').attr('class', 'timer_line');
           update_chart = function (init) {
             var chart_height, chart_width, circles;
             chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (padding.left + padding.right);
@@ -11082,6 +11088,7 @@ angular.module('timer.tmpl', []).run([
               chart_height,
               0
             ]);
+            svg.selectAll('path.timer_line').data([$scope.data]).transition().duration(transition_time).attr('d', line);
             circles = svg.selectAll('circle').data($scope.data, id_function);
             circles.transition().duration(transition_time).attr('cx', function (d) {
               return x(time_function(d));

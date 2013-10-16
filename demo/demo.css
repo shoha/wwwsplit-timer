@@ -120,7 +120,17 @@ div.lineChart
 
   div.lineChart svg
   {
-    shape-rendering: crispEdges;
+  }
+
+  div.lineChart svg #origin_line
+  {
+    stroke-width: 2px;
+    stroke: black;
+  }
+
+  div.lineChart svg rect.ahead
+  {
+    fill: green;
   }
 
   div.lineChart svg .axis .domain
@@ -128,6 +138,13 @@ div.lineChart
     fill: none;
     stroke-width: 1;
     stroke: black;
+  }
+
+  div.lineChart svg .timer_line
+  {
+    fill: none;
+    stroke: rgb(0, 136, 204);
+    stroke-width: 3px;
   }
 
   div.lineChart svg .circle
