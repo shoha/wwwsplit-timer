@@ -60,12 +60,14 @@ angular.module('wwwsplit-timer.charts', ['d3'])
           svg.attr('height', chart_height + padding.top + padding.bottom)
           
           x.domain(d3.extent($scope.data, time_function)).range([0, chart_width])
-          y.domain(d3.extent($scope.data, relative_time_function)).range([chart_height, 0])
+          extent = d3.extent($scope.data, relative_time_function)
+          max_extent = Math.max(Math.abs(extent[0]), Math.abs(extent[1]))
+          adjusted_extent = [-max_extent, max_extent]
+
+          y.domain(adjusted_extent).range([chart_height, 0])
 
           svg.selectAll('path.origin_line')
             .data([[[0, 0],[chart_width, 0]]])
-            .transition()
-            .duration(transition_time)
             .attr('d', origin_line)
 
           svg.selectAll('path.timer_line')
