@@ -14,28 +14,36 @@ describe('wwwsplit-timer.charts::', function() {
 
     $rootScope.data = [
       {
-        x: Math.random(),
-        y: Math.random(),
-        name: '',
-        id: Math.random(),
+        live_data: {
+          live_time: Math.random(),
+          relative_time: Math.random(),
+          name: '',
+          id: Math.random(),
+        }
       },
       {
-        x: Math.random(),
-        y: Math.random(),
-        name: '',
-        id: Math.random(),
-      },
-     {
-        x: Math.random(),
-        y: Math.random(),
-        name: '',
-        id: Math.random(),
+        live_data: {
+          live_time: Math.random(),
+          relative_time: Math.random(),
+          name: '',
+          id: Math.random(),
+        }
       },
       {
-        x: Math.random(),
-        y: Math.random(),
-        name: '',
-        id: Math.random(),
+        live_data: {
+          live_time: Math.random(),
+          relative_time: Math.random(),
+          name: '',
+          id: Math.random(),
+        }
+      },
+      {
+        live_data: {
+          live_time: Math.random(),
+          relative_time: Math.random(),
+          name: '',
+          id: Math.random(),
+        }
       }
     ];
 
@@ -63,7 +71,7 @@ describe('wwwsplit-timer.charts::', function() {
 
   it('should add circles when new data is added', inject(function() {
     $scope.$apply(function() {
-      $scope.data.push({x: Math.random(), y: Math.random(), name: '', id: Math.random()});
+      $scope.data.push({live_data:{live_time: Math.random(), relative_time: Math.random(), name: '', id: Math.random()}});
     })
 
     expect(elem.find('circle')).to.have.length(5);

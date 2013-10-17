@@ -2,7 +2,7 @@ angular.module('wwwsplit-timer.templates', ['timer.tmpl']);
 angular.module('timer.tmpl', []).run([
   '$templateCache',
   function ($templateCache) {
-    $templateCache.put('timer.tmpl', '<div class="ng-scope" id="control_nav">\n' + '  <button class="control" id="start" ng-click="start_timer()" ng-disabled="running || is_editing">\n' + '    <i class="icon-play icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="reset" ng-click="reset_timer()" ng-disabled="!(running || is_finished)">\n' + '    <i class="icon-refresh icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="split" ng-click="split()" ng-disabled="!running">\n' + '    <i class="icon-forward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="unsplit" ng-click="unsplit()" ng-disabled="!running || current_split == current_run.splits[0]">\n' + '    <i class="icon-backward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button style="display: none;" class="control" id="cancel_edit" ng-click="cancel_edit()" ng-disabled="running || run_editor_form.$invalid" ng-show="is_editing">\n' + '    <i class="icon-ban-circle icon-2x icon-white"></i>\n' + '  </button>\n' + '</div>\n' + '\n' + '<div id=\'current_run\'>\n' + '  <table class=\'table\' id=\'current_run_splits\' ng-class=\'{"table-hover": !running}\'>\n' + '    <tr id=\'current_run_title\'>\n' + '      <th colspan=\'2\'>\n' + '        <h1>\n' + '          {{current_run.title}} #{{current_run.attempts}}\n' + '        </h1>\n' + '        <h4 id=\'current_run_game_title\'>\n' + '          <a ng-href=\'#/games/{{current_run.game.id}}\'>\n' + '            {{current_run.game.title}}\n' + '          </a>\n' + '        </h4>\n' + '      </th>\n' + '    </tr>\n' + '    <tr class=\'current_run_split\' ng-class=\'{active_split: split == current_split}\' ng-repeat=\'split in current_run.splits\'>\n' + '      <td class=\'split_title\'>\n' + '      {{split.title}}\n' + '      </td>\n' + '      <td class=\'split_time\' ng-class=\'{ahead: split.live_data.live_time < split.split_time, behind: split.live_data.live_time > split.split_time,\n' + '      gained_time: split.live_data.segment_diff < 0, lost_time: split.live_data.segment_diff > 0 ,\n' + '      unknown: split.live_data.live_time && !split.live_data.relative_time,\n' + '      best: split.live_data.best_segment}\'>\n' + '        <span>{{split.live_data.relative_time || split.live_data.live_time || split.split_time | milliseconds_to_HMS}}</span>\n' + '      </td>\n' + '    </tr>\n' + '  </table>\n' + '</div>\n' + '\n' + '<div class=\'text-right\' id=\'clock\'>\n' + '  <h1 class=\'clock\'>\n' + '    {{(elapsed_time | milliseconds_to_HMS) || \'\'}}\n' + '  </h1>\n' + '</div>\n' + '\n' + '<div class="lineChart" data="current_run.chart_data"></div>');
+    $templateCache.put('timer.tmpl', '<div class="ng-scope" id="control_nav">\n' + '  <button class="control" id="start" ng-click="start_timer()" ng-disabled="running || is_editing">\n' + '    <i class="icon-play icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="reset" ng-click="reset_timer()" ng-disabled="!(running || is_finished)">\n' + '    <i class="icon-refresh icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="split" ng-click="split()" ng-disabled="!running">\n' + '    <i class="icon-forward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button disabled="disabled" class="control" id="unsplit" ng-click="unsplit()" ng-disabled="!running || current_split == current_run.splits[0]">\n' + '    <i class="icon-backward icon-2x icon-white"></i>\n' + '  </button>\n' + '  <button style="display: none;" class="control" id="cancel_edit" ng-click="cancel_edit()" ng-disabled="running || run_editor_form.$invalid" ng-show="is_editing">\n' + '    <i class="icon-ban-circle icon-2x icon-white"></i>\n' + '  </button>\n' + '</div>\n' + '\n' + '<div id=\'current_run\'>\n' + '  <table class=\'table\' id=\'current_run_splits\' ng-class=\'{"table-hover": !running}\'>\n' + '    <tr id=\'current_run_title\'>\n' + '      <th colspan=\'2\'>\n' + '        <h1>\n' + '          {{current_run.title}} #{{current_run.attempts}}\n' + '        </h1>\n' + '        <h4 id=\'current_run_game_title\'>\n' + '          <a ng-href=\'#/games/{{current_run.game.id}}\'>\n' + '            {{current_run.game.title}}\n' + '          </a>\n' + '        </h4>\n' + '      </th>\n' + '    </tr>\n' + '    <tr class=\'current_run_split\' ng-class=\'{active_split: split == current_split}\' ng-repeat=\'split in current_run.splits\'>\n' + '      <td class=\'split_title\'>\n' + '      {{split.title}}\n' + '      </td>\n' + '      <td class=\'split_time\' ng-class=\'{ahead: split.live_data.live_time < split.split_time, behind: split.live_data.live_time > split.split_time,\n' + '      gained_time: split.live_data.segment_diff < 0, lost_time: split.live_data.segment_diff > 0 ,\n' + '      unknown: split.live_data.live_time && !split.live_data.relative_time,\n' + '      best: split.live_data.best_segment}\'>\n' + '        <span>{{split.live_data.relative_time || split.live_data.live_time || split.split_time | milliseconds_to_HMS}}</span>\n' + '      </td>\n' + '    </tr>\n' + '  </table>\n' + '</div>\n' + '\n' + '<div class=\'text-right\' id=\'clock\'>\n' + '  <h1 class=\'clock\'>\n' + '    {{(elapsed_time | milliseconds_to_HMS) || \'\'}}\n' + '  </h1>\n' + '</div>\n' + '\n' + '<div class="lineChart" data="current_run.splits"></div>');
   }
 ]);
 (function () {
@@ -11078,26 +11078,44 @@ angular.module('timer.tmpl', []).run([
           bg.append('svg:rect').attr('id', 'ahead_rect');
           bg.append('svg:rect').attr('id', 'behind_rect');
           bg.append('svg:line').attr('id', 'origin_line');
+          bg.selectAll('rect#ahead_rect').attr('x', 0).attr('y', (chart_height + margin.top + margin.bottom) / 2).attr('width', chart_width + margin.left + margin.right).attr('height', (chart_height + margin.top + margin.bottom) / 2);
+          bg.selectAll('rect#behind_rect').attr('x', 0).attr('y', 0).attr('width', chart_width + margin.left + margin.right).attr('height', (chart_height + margin.top + margin.bottom) / 2);
+          bg.selectAll('line#origin_line').attr('x1', 0).attr('y1', (chart_height + margin.top + margin.bottom) / 2).attr('x2', chart_width + margin.left + margin.right).attr('y2', (chart_height + margin.top + margin.bottom) / 2);
           g.append('svg:path').attr('id', 'timer_line');
           update_chart = function (init) {
-            var adjusted_y_extent, circles, max_y_extent, y_extent;
+            var adjusted_y_extent, circles, filtered_data, max_y_extent, y_extent;
             chart_width = window.getComputedStyle(elem[0]).width.substring(0, window.getComputedStyle(elem[0]).width.length - 2) - (margin.left + margin.right);
             chart_height = window.getComputedStyle(elem[0]).height.substring(0, window.getComputedStyle(elem[0]).height.length - 2) - (margin.bottom + margin.top);
             prev_chart_width = chart_width;
             prev_chart_height = chart_height;
             svg.attr('width', chart_width + margin.left + margin.right);
             svg.attr('height', chart_height + margin.top + margin.bottom);
-            x.domain(d3.extent($scope.data, time_function)).range([
+            filtered_data = [];
+            if ($scope.data != null) {
+              filtered_data = $scope.data.reduce(function (result, datum) {
+                if (datum.live_data != null && datum.live_data.relative_time != null) {
+                  result.push({
+                    x: datum.live_data.live_time,
+                    y: datum.live_data.relative_time,
+                    id: datum.live_data.id
+                  });
+                }
+                return result;
+              }, []);
+            } else {
+              filtered_data = [];
+            }
+            x.domain(d3.extent(filtered_data, time_function)).range([
               0,
               chart_width
             ]);
-            if ($scope.data.length === 0) {
+            if (filtered_data.length === 0) {
               adjusted_y_extent = [
                 -10,
                 10
               ];
             } else {
-              y_extent = d3.extent($scope.data, relative_time_function);
+              y_extent = d3.extent(filtered_data, relative_time_function);
               max_y_extent = Math.max(Math.abs(y_extent[0]), Math.abs(y_extent[1]));
               adjusted_y_extent = [
                 -max_y_extent,
@@ -11111,8 +11129,8 @@ angular.module('timer.tmpl', []).run([
             bg.selectAll('rect#ahead_rect').attr('x', 0).attr('y', (chart_height + margin.top + margin.bottom) / 2).attr('width', chart_width + margin.left + margin.right).attr('height', (chart_height + margin.top + margin.bottom) / 2);
             bg.selectAll('rect#behind_rect').attr('x', 0).attr('y', 0).attr('width', chart_width + margin.left + margin.right).attr('height', (chart_height + margin.top + margin.bottom) / 2);
             bg.selectAll('line#origin_line').attr('x1', 0).attr('y1', (chart_height + margin.top + margin.bottom) / 2).attr('x2', chart_width + margin.left + margin.right).attr('y2', (chart_height + margin.top + margin.bottom) / 2);
-            g.selectAll('path#timer_line').data([$scope.data]).transition().duration(transition_time).attr('d', timer_line);
-            circles = g.selectAll('.circle').data($scope.data, id_function);
+            g.selectAll('path#timer_line').data([filtered_data]).transition().duration(transition_time).attr('d', timer_line);
+            circles = g.selectAll('.circle').data(filtered_data, id_function);
             circles.transition().duration(transition_time).attr('cx', function (d) {
               return x(time_function(d));
             }).attr('cy', function (d) {
@@ -11214,7 +11232,6 @@ angular.module('timer.tmpl', []).run([
             $scope.current_split = $scope.current_run.splits[0];
             $timeout.cancel($scope.timer_timeout_promise);
             $scope.start_time = Date.now();
-            $scope.current_run.chart_data = [];
             $scope.timer_timeout_promise = $timeout(update_time_on_timeout, 25);
             $scope.current_run.attempts++;
             $scope.running = true;
@@ -11237,7 +11254,6 @@ angular.module('timer.tmpl', []).run([
             $timeout.cancel($scope.timer_timeout_promise);
             reset_splits();
             $scope.current_split = null;
-            $scope.current_run.chart_data = [];
             $scope.running = false;
             $scope.is_finished = false;
             $scope.elapsed_time = null;
@@ -11250,13 +11266,7 @@ angular.module('timer.tmpl', []).run([
             calculate_split_statistics($scope.current_split, $scope.current_run.splits.indexOf($scope.current_split));
             if ($scope.current_split.split_time != null) {
               data_point_id = (Math.random() * 1000000).toString(16);
-              $scope.current_run.chart_data.push({
-                x: $scope.current_split.live_data.live_time / 1000,
-                y: $scope.current_split.live_data.relative_time / 1000,
-                name: $scope.current_split.title,
-                id: data_point_id
-              });
-              $scope.current_split.live_data.data_point_id = data_point_id;
+              $scope.current_split.live_data.id = data_point_id;
             }
             if ($scope.current_split === $scope.current_run.splits[$scope.current_run.splits.length - 1]) {
               $scope.finish_run();
@@ -11265,31 +11275,15 @@ angular.module('timer.tmpl', []).run([
             return $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) + 1];
           };
           $scope.unsplit = function () {
-            var d, i, _i, _len, _ref;
             $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) - 1];
-            _ref = $scope.current_run.chart_data;
-            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-              d = _ref[i];
-              if (d.id === $scope.current_split.live_data.data_point_id) {
-                $scope.current_run.chart_data.splice(i, 1);
-              }
-            }
             return $scope.current_split.live_data = {};
           };
-          $scope.finish_run = function () {
+          return $scope.finish_run = function () {
             $timeout.cancel($scope.timer_timeout_promise);
             $scope.current_split = null;
             $scope.running = false;
             return $scope.is_finished = true;
           };
-          return $scope.$watch('current_run', function (new_value, old_value) {
-            if (old_value == null) {
-              return;
-            }
-            if (new_value) {
-              return new_value.chart_data || (new_value.chart_data = []);
-            }
-          });
         }
       };
     }

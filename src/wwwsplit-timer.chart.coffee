@@ -50,6 +50,25 @@ angular.module('wwwsplit-timer.charts', ['d3'])
         bg.append('svg:rect').attr('id', 'ahead_rect')
         bg.append('svg:rect').attr('id', 'behind_rect')
         bg.append('svg:line').attr('id', 'origin_line')
+
+        bg.selectAll('rect#ahead_rect')
+          .attr('x', 0)
+          .attr('y', (chart_height + margin.top + margin.bottom) / 2)
+          .attr('width', (chart_width + margin.left + margin.right))
+          .attr('height', (chart_height + margin.top + margin.bottom) / 2)
+
+        bg.selectAll('rect#behind_rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', (chart_width + margin.left + margin.right))
+          .attr('height', (chart_height + margin.top + margin.bottom) / 2)
+
+        bg.selectAll('line#origin_line')
+          .attr('x1', 0)
+          .attr('y1', (chart_height + margin.top + margin.bottom) / 2)
+          .attr('x2', (chart_width + margin.left + margin.right))
+          .attr('y2', (chart_height + margin.top + margin.bottom) / 2)
+
         g.append('svg:path').attr('id', 'timer_line') 
         
         update_chart = (init) ->
@@ -61,13 +80,26 @@ angular.module('wwwsplit-timer.charts', ['d3'])
 
           svg.attr('width', chart_width + margin.left + margin.right)
           svg.attr('height', chart_height + margin.top + margin.bottom)
-          
-          x.domain(d3.extent($scope.data, time_function)).range([0, chart_width])
+          filtered_data = []
 
-          if $scope.data.length == 0
+          if $scope.data?
+            filtered_data = $scope.data.reduce (result, datum) ->
+              result.push({
+                x: datum.live_data.live_time
+                y: datum.live_data.relative_time
+                id: datum.live_data.id
+              }) if datum.live_data? and datum.live_data.relative_time?
+              result
+            , []
+          else
+            filtered_data = []
+          
+          x.domain(d3.extent(filtered_data, time_function)).range([0, chart_width])
+
+          if filtered_data.length == 0
             adjusted_y_extent = [-10, 10]
           else
-            y_extent = d3.extent($scope.data, relative_time_function)
+            y_extent = d3.extent(filtered_data, relative_time_function)
             max_y_extent = Math.max(Math.abs(y_extent[0]), Math.abs(y_extent[1]))
             adjusted_y_extent = [-max_y_extent, max_y_extent]
 
@@ -92,13 +124,13 @@ angular.module('wwwsplit-timer.charts', ['d3'])
             .attr('y2', (chart_height + margin.top + margin.bottom) / 2)
 
           g.selectAll('path#timer_line')
-            .data([$scope.data])
+            .data([filtered_data])
             .transition()
             .duration(transition_time)
             .attr('d', timer_line)
 
           circles = g.selectAll('.circle')
-            .data($scope.data, id_function)
+            .data(filtered_data, id_function)
 
           circles.transition()
             .duration(transition_time)

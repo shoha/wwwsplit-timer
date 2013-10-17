@@ -59,7 +59,6 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.ch
         $scope.current_split = $scope.current_run.splits[0]
         $timeout.cancel $scope.timer_timeout_promise
         $scope.start_time = Date.now()
-        $scope.current_run.chart_data = []
         $scope.timer_timeout_promise = $timeout update_time_on_timeout, 25
         $scope.current_run.attempts++
         $scope.running = true
@@ -73,7 +72,6 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.ch
         $timeout.cancel $scope.timer_timeout_promise
         reset_splits()
         $scope.current_split = null
-        $scope.current_run.chart_data = []
         $scope.running = false
         $scope.is_finished = false
         $scope.elapsed_time = null
@@ -86,13 +84,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.ch
 
         if $scope.current_split.split_time?
           data_point_id = (Math.random() * 1000000).toString(16);
-          
-          $scope.current_run.chart_data.push
-            x: $scope.current_split.live_data.live_time / 1000
-            y: $scope.current_split.live_data.relative_time / 1000
-            name: $scope.current_split.title
-            id: data_point_id
-          $scope.current_split.live_data.data_point_id = data_point_id;
+          $scope.current_split.live_data.id = data_point_id;
 
         if $scope.current_split == $scope.current_run.splits[$scope.current_run.splits.length - 1]
           $scope.finish_run()
@@ -102,9 +94,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.ch
 
       $scope.unsplit = ->
         $scope.current_split = $scope.current_run.splits[$scope.current_run.splits.indexOf($scope.current_split) - 1]
-        ($scope.current_run.chart_data.splice(i, 1) if d.id == $scope.current_split.live_data.data_point_id) for d, i in $scope.current_run.chart_data
         $scope.current_split.live_data = {}
-        # $scope.current_run.chart_data.pop() if $scope.current_split.split_time?
 
       $scope.finish_run = ->
         $timeout.cancel $scope.timer_timeout_promise
@@ -112,11 +102,6 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.ch
         $scope.running = false
         $scope.is_finished = true
 
-      $scope.$watch('current_run', (new_value, old_value) ->
-        return unless old_value?
-
-        (new_value.chart_data ||= []) if new_value
-      )
 ])
     
   .filter 'milliseconds_to_HMS', ->

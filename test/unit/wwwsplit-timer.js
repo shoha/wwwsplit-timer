@@ -125,8 +125,6 @@ describe('timer::', function() {
       {
         expect(splits[i].live_data).to.not.exist;
       }
-
-      expect($scope.current_run.chart_data).to.be.empty;
     }));
 
   });
@@ -164,7 +162,6 @@ describe('timer::', function() {
       expect(splits[0].live_data).to.exist;
       expect(splits[0].live_data).to.include.keys('live_time')
       expect(splits[0].live_data.live_time).to.eq($scope.elapsed_time);
-      expect($scope.current_run.chart_data).to.have.length(1);
     }));
 
     it('should calculate split statistics correctly on split', inject(function() {
@@ -195,19 +192,17 @@ describe('timer::', function() {
 
     }));
 
-    it('should attach unique IDs shared between split live_data and chart_series data points', inject(function() {
+    it('should attach unique IDs to live_data', inject(function() {
       $scope.start_timer();
       $timeout.flush();
       $scope.split();
 
-      expect(splits[0].live_data.data_point_id).to.exist;
-      expect(splits[0].live_data.data_point_id).to.eq($scope.current_run.chart_data[0].id);
+      expect(splits[0].live_data.id).to.exist;
 
       $timeout.flush();
       $scope.split();
-      expect(splits[1].live_data.data_point_id).to.exist;
-      expect(splits[1].live_data.data_point_id).to.eq($scope.current_run.chart_data[1].id);
-      expect(splits[1].live_data.data_point_id).to.not.eq(splits[0].live_data.data_point_id);
+      expect(splits[1].live_data.id).to.exist;
+      expect(splits[1].live_data.id).to.not.eq(splits[0].live_data.id);
     }));
 
     it('should step back when unsplit is called', inject(function() {
@@ -219,7 +214,6 @@ describe('timer::', function() {
 
       expect($scope.current_split).to.eq(splits[0]);
       expect($scope.current_split.live_data).to.be.empty;
-      expect($scope.current_run.chart_data).to.be.empty;
     }));
 
     it('should reset the run when reset_timer is called', inject(function() {
@@ -237,8 +231,6 @@ describe('timer::', function() {
       {
         expect(splits[i].live_data).to.be.empty;
       }
-
-      expect($scope.current_run.chart_data).to.be.empty;
 
     }));
 
