@@ -2,7 +2,7 @@ angular.module('wwwsplit-timer', ['wwwsplit-timer.templates', 'wwwsplit-timer.ch
   ($timeout) ->
     restrict: 'C'
     scope:
-      current_run: '=ngModel'
+      current_run: '=data'
       running: '=isRunning'
 
 

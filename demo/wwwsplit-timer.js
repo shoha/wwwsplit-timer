@@ -11173,7 +11173,7 @@ angular.module('timer.tmpl', []).run([
       return {
         restrict: 'C',
         scope: {
-          current_run: '=ngModel',
+          current_run: '=data',
           running: '=isRunning'
         },
         templateUrl: 'timer.tmpl',

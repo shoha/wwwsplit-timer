@@ -160,6 +160,7 @@ module.exports = function(grunt) {
   // Build task.
   grunt.registerTask('build', [
     'test',
+    'clean',
     'coffee',
     'html2js',
     'concat',

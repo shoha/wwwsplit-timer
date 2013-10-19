@@ -97,7 +97,7 @@ describe('timer::', function() {
 
     $rootScope.running = false;
 
-    elem = angular.element('<div class="timer" ng-model="run" is_running="running"></div>');
+    elem = angular.element('<div class="timer" data="run" is_running="running"></div>');
     $compile(elem)($rootScope);
     $rootScope.$digest();
     $scope = elem.scope();
