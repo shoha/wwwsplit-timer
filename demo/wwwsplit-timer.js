@@ -1,3 +1,9 @@
+/**
+ * The timer AngularJS component for wwwspl.it
+ * @version v0.1.0 - 2014-06-01
+ * @link http://wwwspl.it
+ * @author James Shore <shore.james@gmail.com>
+ */
 angular.module('wwwsplit-timer.templates', ['timer.tmpl']);
 angular.module('timer.tmpl', []).run([
   '$templateCache',
